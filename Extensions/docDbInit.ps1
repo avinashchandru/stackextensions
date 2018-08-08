@@ -1,5 +1,5 @@
 param([string]$username = "u", [string]$pwd = "p")
-
+try{
 invoke-webrequest -UseBasicparsing -Outfile cosmosdb-emulator.msi https://aka.ms/cosmosdb-emulator
 Start-Process .\cosmosdb-emulator.msi -ArgumentList "/quiet" -Wait
 Start-Process 'C:\Program Files\Azure Cosmos DB Emulator\CosmosDB.Emulator.exe' -ArgumentList "/NoUI /AllowNetworkAccess /Key=lf2YxcQQS1etfXeEsxFavN7k4isJOjOC+wnJuUbZnvBUzMe7GsHg5SQXTI8nQyTXkM3i2eJOCE3nFvP7N//2CQ== /Consistency=Strong /PartitionCount=100"
@@ -22,3 +22,8 @@ $pwd = ConvertTo-SecureString -String $pwd -Force -AsPlainText
 $certpath = "cert:\localMachine\my\" + $DocDbSslCert.Thumbprint
 $outputpath = "\\" + $computerName + "\" + $certsFolder + "\DocDbSslCert.pfx"
 Export-PfxCertificate -cert $certpath -FilePath $outputpath -Password $pwd
+}
+catch{
+Write-Host $_.Exception
+throw $_.Exception
+}

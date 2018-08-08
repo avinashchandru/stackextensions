@@ -5,9 +5,6 @@
  [string]
  $certSubjectName)
  
- SetupIis;
- CreateWebsite -PackageLocation $packageLocation -SiteName "" -CertificateSubject $certSubjectName
-
 function SetupIis(){
 # This script installs IIS and the features required to run asp.net applications
 
@@ -93,3 +90,12 @@ $binding.AddSslCertificate($cert.GetCertHashString(),'My')
 Start-Website -Name $SiteName 
 
 }
+
+try{
+ SetupIis
+ CreateWebsite -PackageLocation $packageLocation -SiteName "" -CertificateSubject $certSubjectName
+ }
+ catch{
+Write-Host $_.Exception
+throw $_.Exception
+ }

@@ -1,5 +1,5 @@
 param([string]$username = "u", [string]$pwd = "p")
-
+try{
 # Initialize datadisk
 Get-Disk | `
 Where partitionstyle -eq 'raw' | `
@@ -40,3 +40,8 @@ Restart-Service -Force MSSQLSERVER
 & sqlcmd -i "CreateIotHubProvisioningData.sql" -o "output7.txt"
 & sqlcmd -i "IotDpsProvisioningSchema.sql" -o "output8.txt"
 & sqlcmd -i "IotDpsProvisioningLogic.sql" -o "output9.txt"
+}
+ catch{
+Write-Host $_.Exception
+throw $_.Exception
+ }
