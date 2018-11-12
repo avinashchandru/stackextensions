@@ -53,7 +53,7 @@ KAFKA_PARTITIONS=16
 STOP_KAFKA=false
 
 # Loop through options passed
-while getopts :n:a:z:k:m:r:i:t:y:u:p:x:h optname; do
+while getopts :n:a:z:k:m:r:i:t:y:u:p:x:s:h optname; do
     log "Option $optname set with value ${OPTARG}"
   case $optname in
     n) # VM names
