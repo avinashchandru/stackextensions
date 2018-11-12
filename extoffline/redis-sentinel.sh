@@ -93,7 +93,7 @@ tune_system()
     log "Tuning the system configuration"
 
     # Ensure the source list is up-to-date
-    apt-get -y update
+    #apt-get -y update
 
     # Add local machine name to the hosts file to facilitate IP address resolution
     if grep -q "${HOSTNAME}" /etc/hosts
@@ -113,7 +113,7 @@ tune_memory()
     log "Tuning the memory configuration"
 
     # Get the supporting utilities
-    apt-get -y install hugepages
+    #apt-get -y install hugepages
 
     # Resolve a "Background save may fail under low memory condition." warning
     sysctl vm.overcommit_memory=1
