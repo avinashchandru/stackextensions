@@ -74,7 +74,9 @@ fi
 BROKER_ID=0
 ZOOKEEPER_IPS=""
 ZOOKEEPER_PORT="2181"
-KAFKA_DIR="/var/lib/kafkadir"
+DATA_DISKS="/datadisks"
+DATA_MOUNTPOINT="$DATA_DISKS/disk1"
+KAFKA_DIR="$DATA_MOUNTPOINT/kafka-logs"
 KAFKA_ADVERTISED=""
 
 KAFKA_MIN_VER=2.12
@@ -152,26 +154,26 @@ install_kafka()
 {
     log "Installing Kafka"
 
-    cd /usr/local
+    cd /usr/local/kafka
     src_package="kafka_${KAFKA_MIN_VER}-${KAFKA_MAJ_VER}.tgz"
     download_url=http://archive.apache.org/dist/kafka/${KAFKA_MAJ_VER}/${src_package}
 
     stop_kafka
 
-    rm -rf kafka
-    mkdir -p kafka
-    cd kafka
+    #rm -rf kafka
+    #mkdir -p kafka
+    #cd kafka
 
-    if [[ ! -f "${src_package}" ]]; then
+    #if [[ ! -f "${src_package}" ]]; then
       #log "Download Kafka from ${download_url}"
       #wget ${download_url}
-    fi
+    #fi
     tar zxf ${src_package}
     cd kafka_${KAFKA_MIN_VER}-${KAFKA_MAJ_VER}
 
     sed -r -i "s/(broker.id)=(.*)/\1=${BROKER_ID}/g" config/server.properties
     sed -r -i "s/(zookeeper.connect)=(.*)/\1=$(join , $(get_ip_port_list "${ZOOKEEPER_IPS}"))/g" config/server.properties
-    sed -r -i "s/(log.dirs)=(.*)/\1=${KAFKA_DIR}/g" config/server.properties
+    sed -r -i "s#(log.dirs)=(.*)#\1=${KAFKA_DIR}#g" config/server.properties
     sed -r -i "s/(num.partitions)=(.*)/\1=${KAFKA_PARTITIONS}/g" config/server.properties
 
     # Ensure new line before
