@@ -204,7 +204,7 @@ if [ ${INSTANCE_INDEX} -ne 255 ]; then
     /bin/bash ./zookeeper.sh -a "$(join , $(echo ${zk_ips[@]}))" -i "${INSTANCE_INDEX}"
 fi
 
-if [ "${STOP_KAFKA}" = true]; then
+if [ "${STOP_KAFKA}" = False -o "${STOP_KAFKA}" = false ]; then
     echo "Install kafka" >> trace.log
     contain_index "${CUR_VM_INDEX}" "${KAFKA_VM_INDEXES[@]}"
     INSTANCE_INDEX=$?
